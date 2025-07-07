@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(
-      "mongodb+srv://araheem2:1s67XGYglQUKmkKW@solicitorsense.lyze6nu.mongodb.net/?retryWrites=true&w=majority&appName=SolicitorSense"
+     process.env.MONGO_DB
     );
     console.log(`MongoDB connected: ${conn.connection.host}`);
   } catch (error) {
