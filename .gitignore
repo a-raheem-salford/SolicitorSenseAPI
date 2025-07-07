@@ -1,0 +1,20 @@
+# Ignore node_modules directory for third-party dependencies
+node_modules/
+
+# Ignore environment variable files
+.env
+*.env  # For ignoring all files ending with .env
+
+# Common build or output directories (adjust based on your project)
+build/
+dist/
+out/
+
+# Log files
+*.log
+
+# Temporary or cache folders (consult your tools' documentation)
+# ... (add specific folder names here)
+
+# Optional: Ignore additional files or patterns as needed
+# ... (add your custom patterns here)

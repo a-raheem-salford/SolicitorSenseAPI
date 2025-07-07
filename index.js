@@ -1,0 +1,18 @@
+
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const connectDB = require("./database/conn");
+const parseXML = require("./routes/lawData.routes");
+
+const app = express();
+app.use(express.json());
+app.use(cors());
+connectDB();
+
+app.get("/", (req, res) => {
+  res.send("Successful response.");
+});
+app.use("/parseXML", parseXML);
+
+app.listen(4000, () => console.log("Example app is listening on port 4000."));
