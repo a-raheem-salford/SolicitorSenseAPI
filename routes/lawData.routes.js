@@ -17,7 +17,9 @@ const pinecone = new Pinecone({
 
 const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX_NAME);
 
-const xmlLinks = ["https://www.legislation.gov.uk/ukpga/1996/18/data.xml"];
+const xmlLinks = [
+  "https://www.legislation.gov.uk/ukpga/1974/37/data.xml",
+];
 
 function flattenXmlToText(obj) {
   let result = "";
@@ -77,7 +79,7 @@ router.get("/", async (req, res) => {
         allChunks.push({
           id: `${url}-chunk-${i}`,
           text: chunk,
-          source: url,
+          source: pdfUrl,
         });
         console.log(`Stored chunk ${i + 1} in Pinecone`);
       }
