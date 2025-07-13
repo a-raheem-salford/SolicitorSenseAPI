@@ -26,7 +26,7 @@ const login = async ({ email, password }) => {
     }
   );
 
-  return { token, id: user._id, email: user.email, name: user.name };
+  return { token, email: user.email, name: user.name };
 };
 
 module.exports = { signup, login };
