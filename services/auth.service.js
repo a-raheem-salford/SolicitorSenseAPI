@@ -1,6 +1,8 @@
 const User = require("../models//user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client();
 
 const signup = async ({ name, email, password }) => {
   const existingUser = await User.findOne({ email });
@@ -28,5 +30,37 @@ const login = async ({ email, password }) => {
 
   return { token, email: user.email, name: user.name };
 };
+const googleLogin = async (data) => {
+  const { credential, clientId } = data;
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: clientId,
+    });
+    const payload = ticket.getPayload();
+    const { email, given_name, family_name } = payload;
 
-module.exports = { signup, login };
+    let user = await User.findOne({ email });
+    if (!user) {
+      user = await User.create({
+        email,
+        name: `${given_name} ${family_name}`,
+      });
+    }
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1Y",
+      }
+    );
+
+    return { token, email: user.email, name: user.name };
+  } catch (err) {
+    console.log("error which signin google server ", err);
+
+    return err;
+  }
+};
+
+module.exports = { signup, login, googleLogin };
