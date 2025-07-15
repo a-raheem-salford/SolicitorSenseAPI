@@ -20,6 +20,8 @@
   "homepage": "https://github.com/a-raheem-salford/SolicitorSenseAPI#readme",
   "description": "",
   "dependencies": {
+    "@langchain/core": "^0.3.62",
+    "@langchain/openai": "^0.5.18",
     "@pinecone-database/pinecone": "^6.1.1",
     "axios": "^1.10.0",
     "bcrypt": "^6.0.0",
@@ -32,6 +34,7 @@
     "langchain": "^0.3.29",
     "mongoose": "^8.16.2",
     "openai": "^5.8.2",
+    "uuid": "^11.1.0",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
