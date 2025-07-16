@@ -1,10 +1,9 @@
 const express = require("express");
 const Message = require("../models/chat");
-// const { mainInput } = require("../chat.service");
 const { v4: uuidv4 } = require("uuid");
-const mongoose = require("mongoose");
 const { HumanMessage, AIMessage } = require("@langchain/core/messages");
 const authenticateToken = require("../middlewares/authMiddleware");
+const { legalChat } = require("../services/chat.service");
 
 const router = express.Router();
 
@@ -31,8 +30,11 @@ router.post("/", authenticateToken, async (req, res) => {
         }
       });
     }
-
-    // const response = await mainInput(msg, sessionId, pastMessages, user);
+    const response = await legalChat({
+      userInput: msg,
+      sessionId,
+      pastMessages,
+    });
 
     const newMessage = new Message({
       msg,
@@ -44,7 +46,7 @@ router.post("/", authenticateToken, async (req, res) => {
     await newMessage.save();
 
     const objAI = {
-      msg: "Dummy AI generated message",
+      msg: response.text,
       sessionId,
       userId,
       type: "AI",
@@ -53,7 +55,13 @@ router.post("/", authenticateToken, async (req, res) => {
     const messageAI = new Message(objAI);
     await messageAI.save();
 
-    res.status(201).json({ msg: objAI.msg, userId, sessionId, userId });
+    res.status(201).json({
+      msg: response.text,
+      sessionId,
+      userId,
+      sources: response.sources,
+      fromFallback: response.fallback || false,
+    });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -82,15 +90,12 @@ router.get("/list", authenticateToken, async (req, res) => {
     let user = req.user;
     const userId = user?.id;
 
-    // Validate userId
     if (!userId) {
       return res.status(400).json({ error: "userId is required" });
     }
 
-    // Retrieve sessionIds associated with the provided userId
     const sessionIds = await Message.distinct("sessionId", { userId });
 
-    // Perform aggregation pipeline only if sessionIds are found
     if (sessionIds.length > 0) {
       const messages = await Message.aggregate([
         {
@@ -134,23 +139,6 @@ router.get("/:id", async (req, res) => {
     res.status(200).json(message);
   } catch (err) {
     res.status(500).json({ error: err.message });
-  }
-});
-
-// Update a message by ID
-router.put("/:id", async (req, res) => {
-  try {
-    const updatedMessage = await Message.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
-    if (!updatedMessage) {
-      return res.status(404).json({ error: "Message not found" });
-    }
-    res.status(200).json(updatedMessage);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
   }
 });
 
