@@ -53,7 +53,7 @@ router.post(
       const uploadedFiles = req.files || [];
 
       console.log(
-        `📤 Chat request - Files: ${uploadedFiles.length}, Message: "${
+        `Chat request - Files: ${uploadedFiles.length}, Message: "${
           msg || "none"
         }"`
       );
@@ -69,7 +69,7 @@ router.post(
       let hasTechnicalErrors = false;
 
       if (uploadedFiles.length > 0) {
-        console.log(`📄 Processing ${uploadedFiles.length} uploaded files...`);
+        console.log(`Processing ${uploadedFiles.length} uploaded files...`);
 
         for (const file of uploadedFiles) {
           try {
@@ -90,11 +90,11 @@ router.post(
             });
 
             console.log(
-              `✅ Processed: ${file.originalname} -> ${docResult.documentType}`
+              `Processed: ${file.originalname} -> ${docResult.documentType}`
             );
           } catch (docError) {
             console.error(
-              `❌ Failed to process ${file.originalname}:`,
+              `Failed to process ${file.originalname}:`,
               docError.message
             );
 
@@ -104,7 +104,7 @@ router.post(
               )
             ) {
               console.log(
-                `📋 Document marked as irrelevant: ${file.originalname}`
+                `Document marked as irrelevant: ${file.originalname}`
               );
 
               irrelevantDocuments.push({
@@ -121,7 +121,7 @@ router.post(
               });
             } else {
               console.error(
-                `💥 Technical error processing ${file.originalname}:`,
+                ` Technical error processing ${file.originalname}:`,
                 docError.message
               );
 
@@ -160,7 +160,7 @@ router.post(
       }
 
       console.log(
-        `📝 Proceeding with chat - Valid docs: ${hasValidDocuments}, Message: ${!!enhancedMessage}, Irrelevant: ${
+        `Proceeding with chat - Valid docs: ${hasValidDocuments}, Message: ${!!enhancedMessage}, Irrelevant: ${
           irrelevantDocuments.length
         }`
       );
@@ -256,7 +256,7 @@ router.post(
 
       res.status(201).json(responseData);
     } catch (err) {
-      console.error("❌ Chat route error:", err);
+      console.error("Chat route error:", err);
 
       if (err.code === "LIMIT_FILE_SIZE") {
         return res.status(400).json({
@@ -309,7 +309,7 @@ router.get("/documents/:sessionId", authenticateToken, async (req, res) => {
       })),
     });
   } catch (err) {
-    console.error("❌ Error fetching documents:", err);
+    console.error("Error fetching documents:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -336,7 +336,7 @@ router.delete("/documents/:documentId", authenticateToken, async (req, res) => {
       message: `Document ${document.originalFilename} removed from session`,
     });
   } catch (err) {
-    console.error("❌ Error deleting document:", err);
+    console.error("Error deleting document:", err);
     res.status(500).json({ error: err.message });
   }
 });

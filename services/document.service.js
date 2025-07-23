@@ -214,7 +214,7 @@ async function processUploadedDocument({
 
     await document.save();
 
-    console.log(`✅ Document saved: ${document._id}`);
+    console.log(` Document saved: ${document._id}`);
 
     return {
       documentId: document._id,
@@ -225,7 +225,7 @@ async function processUploadedDocument({
       extractedText: text, // Return for immediate use
     };
   } catch (error) {
-    console.error("❌ Document processing error:", error);
+    console.error("Document processing error:", error);
     throw new Error(`Document processing failed: ${error.message}`);
   }
 }
@@ -904,7 +904,6 @@ function isUKLegalDocument(text, filename) {
     indicators.currency > 0 ||
     (indicators.employmentTerms > 2 && indicators.legalConcepts > 1);
 
-  console.log({ relevanceScore, hasStrongUKIndicator });
 
   // Determine relevance
   const isRelevant = relevanceScore >= 8 && hasStrongUKIndicator;

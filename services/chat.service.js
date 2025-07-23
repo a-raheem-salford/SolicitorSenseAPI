@@ -295,7 +295,7 @@ const legalChat = async ({
   irrelevantDocuments = [],
 }) => {
   try {
-    console.log(`🔍 Processing legal query: "${userInput}"`);
+    console.log(`Processing legal query: "${userInput}"`);
 
     const hasCurrentDocumentReferences =
       /\b(this document|the document|this file|the file|this contract|the contract|uploaded document)\b/i.test(
@@ -309,7 +309,7 @@ const legalChat = async ({
     ) {
       // User is asking about current rejected documents
       console.log(
-        `📋 User asking about rejected documents from current request`
+        `User asking about rejected documents from current request`
       );
 
       const rejectedFileNames = irrelevantDocuments
@@ -348,7 +348,7 @@ Or feel free to ask me any questions about UK law.`;
     const hasDocuments = uploadedDocuments.length > 0;
 
     console.log(
-      `📄 Found ${uploadedDocuments.length} uploaded documents for session`
+      `Found ${uploadedDocuments.length} uploaded documents for session`
     );
 
     // *** NEW: Check if query is about uploaded documents ***
@@ -357,7 +357,7 @@ Or feel free to ask me any questions about UK law.`;
 
     if (isDocumentQuery) {
       console.log(
-        `📋 Query appears to be about uploaded documents - enhancing context`
+        `Query appears to be about uploaded documents - enhancing context`
       );
 
       // Create enhanced context with document content
@@ -442,7 +442,7 @@ Please provide a comprehensive answer considering both the uploaded documents an
     ];
 
     console.log(
-      `📊 Search results: ${
+      `Search results: ${
         sortedResults.length
       } docs, best score: ${bestScore.toFixed(
         3
@@ -461,7 +461,7 @@ Please provide a comprehensive answer considering both the uploaded documents an
 
     if (strongMatches.length > 0) {
       console.log(
-        `✅ Found ${strongMatches.length} matches above threshold ${SCORE_THRESHOLD}`
+        `Found ${strongMatches.length} matches above threshold ${SCORE_THRESHOLD}`
       );
 
       const relevantDocs = strongMatches.map((result) => result.doc);
@@ -560,7 +560,7 @@ Please structure your response with clear legal authority, practical explanation
     }
 
     console.log(
-      `⚠️ No strong matches found (best: ${bestScore.toFixed(
+      `No strong matches found (best: ${bestScore.toFixed(
         3
       )}). Using enhanced fallback.`
     );
@@ -620,7 +620,7 @@ Please structure your response with clear legal authority, practical explanation
       documentsAvailable: uploadedDocuments.length,
     };
   } catch (error) {
-    console.error("❌ Error in legalChat:", error);
+    console.error("Error in legalChat:", error);
     throw new Error(`Failed to process legal query: ${error.message}`);
   }
 };

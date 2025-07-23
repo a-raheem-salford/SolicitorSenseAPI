@@ -290,7 +290,6 @@ router.get("/", async (req, res) => {
 
     for (const url of xmlLinks) {
       try {
-        console.log(` Fetching: ${url}`);
         const pdfUrl = url.replace(/\.xml$/, ".pdf");
         const legislationInfo = getLegislationInfo(url);
 
